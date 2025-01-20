@@ -1,0 +1,374 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["schemaVersion", "name", "description", "pillars"],
+  "errorMessage": {
+    "required": "A lens must have schemaVersion, name, description, and pillars",
+    "type": "Lens must be a JSON object"
+  },
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["2021-11-01"],
+      "errorMessage": {
+        "type": "schemaVersion must be a string",
+        "enum": "schemaVersion must be one of: 2021-11-01"
+      }
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 128,
+      "minLength": 1,
+      "errorMessage": {
+        "type": "name must be a string",
+        "maxLength": "name must not exceed 128 characters",
+        "minLength": "name must not be empty"
+      }
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2048,
+      "minLength": 1,
+      "errorMessage": {
+        "type": "description must be a string",
+        "maxLength": "description must not exceed 2048 characters",
+        "minLength": "description must not be empty"
+      }
+    },
+    "pillars": {
+      "type": "array",
+      "maxItems": 10,
+      "minItems": 1,
+      "errorMessage": {
+        "type": "pillars must be an array",
+        "maxItems": "Cannot have more than 10 pillars",
+        "minItems": "Must have at least 1 pillar"
+      },
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "questions"],
+        "errorMessage": {
+          "type": "Each pillar must be an object",
+          "required": "Each pillar must have an id, name, and questions"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_]{3,128}$",
+            "errorMessage": {
+              "type": "pillar id must be a string",
+              "pattern": "Pillar id must be 3-128 characters long and contain only letters, numbers, and underscores"
+            }
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "errorMessage": {
+              "type": "pillar name must be a string",
+              "maxLength": "Pillar name must not exceed 128 characters",
+              "minLength": "Pillar name must not be empty"
+            }
+          },
+          "questions": {
+            "type": "array",
+            "maxItems": 20,
+            "errorMessage": {
+              "type": "questions must be an array",
+              "maxItems": "Cannot have more than 20 questions per pillar"
+            },
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "title",
+                "description",
+                "choices",
+                "riskRules"
+              ],
+              "errorMessage": {
+                "type": "Each question must be an object",
+                "required": "Each question must have id, title, description, choices, and riskRules"
+              },
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_]{3,128}$",
+                  "errorMessage": {
+                    "type": "question id must be a string",
+                    "pattern": "Question id must be 3-128 characters long and contain only letters, numbers, and underscores"
+                  }
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "errorMessage": {
+                    "type": "question title must be a string",
+                    "maxLength": "Question title must not exceed 128 characters",
+                    "minLength": "Question title must not be empty"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "minLength": 1,
+                  "errorMessage": {
+                    "type": "question description must be a string",
+                    "maxLength": "Question description must not exceed 2048 characters",
+                    "minLength": "Question description must not be empty"
+                  }
+                },
+                "helpfulResource": {
+                  "type": "object",
+                  "required": ["displayText"],
+                  "errorMessage": {
+                    "type": "helpfulResource must be an object",
+                    "required": "helpfulResource must have a displayText"
+                  },
+                  "properties": {
+                    "displayText": {
+                      "type": "string",
+                      "maxLength": 2048,
+                      "errorMessage": {
+                        "type": "displayText must be a string",
+                        "maxLength": "displayText must not exceed 2048 characters"
+                      }
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "http-url",
+                      "errorMessage": {
+                        "type": "helpfulResource url must be a string",
+                        "format": "helpfulResource url must be a valid URI",
+                        "pattern": "helpfulResource url must start with http:// or https://"
+                      }
+                    }
+                  }
+                },
+                "choices": {
+                  "type": "array",
+                  "maxItems": 15,
+                  "minItems": 1,
+                  "errorMessage": {
+                    "type": "choices must be an array",
+                    "maxItems": "Cannot have more than 15 choices per question",
+                    "minItems": "Must have at least 1 choice per question"
+                  },
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "title"],
+                    "allOf": [
+                      {
+                        "if": {
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "pattern": "_no$"
+                            }
+                          }
+                        },
+                        "then": {
+                          "required": ["id", "title"]
+                        },
+                        "else": {
+                          "required": ["id", "title", "improvementPlan"],
+                          "errorMessage": {
+                            "required": "Choices must include an improvementPlan, expect a `None of these` choice"
+                          }
+                        }
+                      }
+                    ],
+                    "errorMessage": {
+                      "type": "Each choice must be an object",
+                      "required": "Each choice must have an id and title"
+                    },
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z0-9_]{3,128}$",
+                        "errorMessage": {
+                          "type": "choice id must be a string",
+                          "pattern": "Choice id must be 3-128 characters long and contain only letters, numbers, and underscores"
+                        }
+                      },
+                      "title": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "errorMessage": {
+                          "type": "choice title must be a string",
+                          "maxLength": "Choice title must not exceed 128 characters",
+                          "minLength": "Choice title must not be empty"
+                        }
+                      },
+                      "helpfulResource": {
+                        "type": "object",
+                        "required": ["displayText"],
+                        "errorMessage": {
+                          "type": "helpfulResource must be an object",
+                          "required": "helpfulResource must have a displayText"
+                        },
+                        "properties": {
+                          "displayText": {
+                            "type": "string",
+                            "maxLength": 2048,
+                            "errorMessage": {
+                              "type": "displayText must be a string",
+                              "maxLength": "displayText must not exceed 2048 characters"
+                            }
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "http-url",
+                            "errorMessage": {
+                              "type": "helpfulResource url must be a string",
+                              "format": "helpfulResource url must be a valid URI",
+                              "pattern": "helpfulResource url must start with http:// or https://"
+                            }
+                          }
+                        }
+                      },
+                      "improvementPlan": {
+                        "type": "object",
+                        "required": ["displayText"],
+                        "errorMessage": {
+                          "type": "improvementPlan must be an object",
+                          "required": "improvementPlan must have a displayText"
+                        },
+                        "properties": {
+                          "displayText": {
+                            "type": "string",
+                            "maxLength": 2048,
+                            "errorMessage": {
+                              "type": "improvementPlan displayText must be a string",
+                              "maxLength": "improvementPlan displayText must not exceed 2048 characters"
+                            }
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "http-url",
+                            "errorMessage": {
+                              "type": "improvementPlan url must be a string",
+                              "format": "improvementPlan url must be a valid URI",
+                              "pattern": "improvementPlan url must start with http:// or https://"
+                            }
+                          }
+                        }
+                      },
+                      "additionalResources": {
+                        "type": "array",
+                        "maxItems": 10,
+                        "errorMessage": {
+                          "type": "additionalResources must be an array",
+                          "maxItems": "Cannot have more than 10 additional resources"
+                        },
+                        "items": {
+                          "type": "object",
+                          "required": ["type", "content"],
+                          "errorMessage": {
+                            "type": "Each additional resource must be an object",
+                            "required": "Each additional resource must have a type and content"
+                          },
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": ["HELPFUL_RESOURCE", "IMPROVEMENT_PLAN"],
+                              "errorMessage": {
+                                "type": "resource type must be a string",
+                                "enum": "resource type must be either HELPFUL_RESOURCE or IMPROVEMENT_PLAN"
+                              }
+                            },
+                            "content": {
+                              "type": "array",
+                              "maxItems": 5,
+                              "errorMessage": {
+                                "type": "content must be an array",
+                                "maxItems": "Cannot have more than 5 content items per resource"
+                              },
+                              "items": {
+                                "type": "object",
+                                "required": ["displayText"],
+                                "errorMessage": {
+                                  "type": "Each content item must be an object",
+                                  "required": "Each content item must have a displayText"
+                                },
+                                "properties": {
+                                  "displayText": {
+                                    "type": "string",
+                                    "maxLength": 2048,
+                                    "errorMessage": {
+                                      "type": "content displayText must be a string",
+                                      "maxLength": "content displayText must not exceed 2048 characters"
+                                    }
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "format": "http-url",
+                                    "errorMessage": {
+                                      "type": "content url must be a string",
+                                      "format": "content url must be a valid URI",
+                                      "pattern": "content url must start with http:// or https://"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "riskRules": {
+                  "type": "array",
+                  "maxItems": 3,
+                  "minItems": 1,
+                  "contains": {
+                    "type": "object",
+                    "properties": {
+                      "condition": {
+                        "const": "default"
+                      }
+                    },
+                    "required": ["condition"]
+                  },
+                  "errorMessage": {
+                    "type": "riskRules must be an array",
+                    "maxItems": "Cannot have more than 3 risk rules",
+                    "minItems": "Must have at least 1 risk rule",
+                    "contains": "Each question must contain a default risk rule"
+                  },
+                  "items": {
+                    "type": "object",
+                    "required": ["condition", "risk"],
+                    "errorMessage": {
+                      "type": "Each risk rule must be an object",
+                      "required": "Each risk rule must have a condition and risk level"
+                    },
+                    "properties": {
+                      "condition": {
+                        "type": "string",
+                        "errorMessage": {
+                          "type": "condition must be a string"
+                        }
+                      },
+                      "risk": {
+                        "type": "string",
+                        "enum": ["HIGH_RISK", "MEDIUM_RISK", "NO_RISK"],
+                        "errorMessage": {
+                          "type": "risk must be a string",
+                          "enum": "risk must be one of: HIGH_RISK, MEDIUM_RISK, NO_RISK"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
