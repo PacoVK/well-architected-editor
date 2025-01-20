@@ -129,7 +129,11 @@ export default function AddQuestion({
               <Button variant="primary">Save</Button>
             </SpaceBetween>
           }
-          header={<Header variant="h3">Add new question</Header>}
+          header={
+            <Header variant="h3">
+              {question?.title ? "Edit question" : "Add new question"}
+            </Header>
+          }
         >
           <FormField
             description='The question ID is generated automatically. The IDs used in a question must be unique and can be from 3 to 128 characters and contain only alphanumeric and underscore ("_") characters.'

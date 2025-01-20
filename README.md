@@ -1,50 +1,31 @@
-# React + TypeScript + Vite
+# Well-Architected Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Custom lens creation with ease
 
-Currently, two official plugins are available:
+![Overview](./docs/overview.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Purpose
 
-## Expanding the ESLint configuration
+The Well-Architected Editor is a tool for creating and editing AWS Well-Architected Lenses. It is built with ❤️, 🤘, [React](https://react.dev), and the [Cloudscape Design System](https://cloudscape.design).
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Principles and Goals
 
-- Configure the top-level `parserOptions` property like this:
+The editor is built with the following principles and goals in mind:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+- **Local Editing and Saving**: Data is not sent anywhere; it is stored in the browser's local storage and won't leave your computer.
+- **Ease of Use**: The editor simplifies the process of creating and editing lenses, eliminating the need to manually edit JSON files.
+- **Validation**: Validate your lens before uploading it to the AWS Well-Architected Tool, making it easy to spot and fix mistakes.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+![Details](./docs/detail.png)
 
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
+### Creator
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
-```
+The Well-Architected Editor was created by [Pascal Euhus](https://github.com/pacovk).
+
+### Source Code
+
+The source code is available on [GitHub](https://github.com/PacoVK/well-architected-editor).
+
+### Feedback and Contributions
+
+We welcome feedback and future contributors! If you have suggestions or would like to contribute, please visit our [GitHub repository](https://github.com/PacoVK/well-architected-editor) and open an issue or submit a pull request. Thank you for helping us improve the Well-Architected Editor!
