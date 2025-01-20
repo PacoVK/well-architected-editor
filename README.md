@@ -4,6 +4,10 @@
 
 ![Overview](./docs/overview.png)
 
+### Quickstart
+
+To start using the Well-Architected Editor, visit the [editor](https://pascal.euhus.dev/well-architected-editor/) and start creating your custom lens, or simply upload one of the Custom-Lens-WA-Hub e.g. [DynamoDB Lens](https://github.com/aws-samples/custom-lens-wa-hub/tree/main/DynamoDB)
+
 ### Purpose
 
 The Well-Architected Editor is a tool for creating and editing AWS Well-Architected Lenses. It is built with ❤️, 🤘, [React](https://react.dev), and the [Cloudscape Design System](https://cloudscape.design).
