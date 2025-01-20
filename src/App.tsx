@@ -140,7 +140,7 @@ export default function App() {
               {
                 type: "link",
                 text: `Editor Source Code`,
-                href: `#`,
+                href: `https://github.com/PacoVK/well-architected-editor`,
                 external: true,
               },
             ]}

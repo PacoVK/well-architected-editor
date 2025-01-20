@@ -45,7 +45,7 @@ export default function About() {
       <Box variant="p">
         The source code is available on{" "}
         <a
-          href="https://github.com/pacovk/well-architected-lens-editor"
+          href="https://github.com/PacoVK/well-architected-editor"
           target="_blank"
           rel="noreferrer"
         >
